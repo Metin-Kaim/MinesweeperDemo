@@ -434,7 +434,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cellPrefab: {fileID: 7574163634377925738, guid: 23c499336801ebd41a7815ff31da700a, type: 3}
-  _bombAmount: 10
+  _bombAmount: 20
 --- !u!1 &1131474616
 GameObject:
   m_ObjectHideFlags: 0

@@ -25,11 +25,11 @@ public class CellSpawner : MonoBehaviour
 
         for (int i = 0; i < _bombAmount; i++)
         {
-            int x = Random.Range(0, GameManager.BOUNDARY_X);
-            int y = Random.Range(0, GameManager.BOUNDARY_Y);
-
             do
             {
+                int x = Random.Range(0, GameManager.BOUNDARY_X);
+                int y = Random.Range(0, GameManager.BOUNDARY_Y);
+
                 buttonManager = GameManager.Instance.cells[x, y].GetComponent<ButtonManager>();
 
             } while (buttonManager.IsBomb);
