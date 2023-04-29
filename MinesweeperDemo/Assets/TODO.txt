@@ -4,8 +4,9 @@
 	[-] Manuel boyut
 [x] Input Read
 [x] Cell Activate
-[ ] Random Mines
-
+[x] Random Mines
+[>] Her bir cell objesi komsu bomba sayilarini tutacak
+[ ] Explode cells
 
 
 [!>] Cell dizisinin konumu 

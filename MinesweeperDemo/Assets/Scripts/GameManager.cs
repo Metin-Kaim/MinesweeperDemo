@@ -7,7 +7,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public Button[,] cells = new Button[9, 15];
+    public const int BOUNDARY_X = 9, BOUNDARY_Y = 15;
+
+    public ButtonManager[,] cells = new ButtonManager[BOUNDARY_X, BOUNDARY_Y];
 
     private void Awake()
     {

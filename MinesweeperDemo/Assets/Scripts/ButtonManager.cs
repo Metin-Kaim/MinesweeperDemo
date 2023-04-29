@@ -6,9 +6,11 @@ using UnityEngine.UI;
 public class ButtonManager : MonoBehaviour
 {
     [SerializeField] int _x, _y;
+    [SerializeField] bool _isBomb;
 
     public int X { get => _x; set => _x = value; }
     public int Y { get => _y; set => _y = value; }
+    public bool IsBomb { get => _isBomb; set => _isBomb = value; }
 
     public void ButtonClicked()
     {
