@@ -6,7 +6,9 @@
 [x] Cell Activate
 [x] Random Mines
 [x] Her bir cell objesi komsu bomba sayilarini tutacak
-[>] Explode cells
+[x] Explode cells
+[x] Mark mines
+[ ] Game Over
 
-
-[!>] Cell dizisinin konumu 
+---------------------------
+[x] Cell dizisinin konumu 

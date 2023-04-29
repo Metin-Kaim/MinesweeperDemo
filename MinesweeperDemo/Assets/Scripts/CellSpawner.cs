@@ -35,7 +35,6 @@ public class CellSpawner : MonoBehaviour
             } while (buttonManager.IsBomb);
 
             buttonManager.IsBomb = true;
-            buttonManager.gameObject.GetComponent<Image>().color = Color.red;
 
         }
     }

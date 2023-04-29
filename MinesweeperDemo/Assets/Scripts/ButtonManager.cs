@@ -2,14 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ButtonManager : MonoBehaviour
+public class ButtonManager : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] int _x, _y;
     [SerializeField] bool _isBomb;
     [SerializeField] int _bombCount;
-    [SerializeField] bool isChecked;
+    [SerializeField] bool _isChecked;
+    [SerializeField] bool _canLeftClick = true;
 
     public int X { get => _x; set => _x = value; }
     public int Y { get => _y; set => _y = value; }
@@ -18,10 +20,10 @@ public class ButtonManager : MonoBehaviour
     private void Start()
     {
         if (!_isBomb)
-            FindNeighborBombsCount();
+            FindNeighborsBombsCount();
     }
 
-    private void FindNeighborBombsCount()
+    private void FindNeighborsBombsCount()
     {
         ButtonManager tempObject;
 
@@ -40,28 +42,47 @@ public class ButtonManager : MonoBehaviour
                 }
             }
         }
-        transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _bombCount.ToString();
+        //transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _bombCount.ToString();
     }
 
-    public void ButtonClicked()
+    public void OnPointerClick(PointerEventData eventData)
     {
-        if (InputReader.MouseClick == 0) //left click
+        if (eventData.button == PointerEventData.InputButton.Left && _canLeftClick)
         {
             CheckCell(_x, _y);
+        }
+        else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            if (_canLeftClick)
+            {
+                GetComponent<Image>().color = Color.red;
+                _canLeftClick = false;
+            }
+            else
+            {
+                GetComponent<Image>().color = Color.white;
+                _canLeftClick = true;
+            }
+        }
+            
+    }
 
-            //Debug.Log($"Etkileþim saðlandý x:{X} y:{Y}");
+    private void CheckSides(int _x, int _y)
+    {
+        for (int y = _y - 1; y <= _y + 1; y++)
+        {
+            for (int x = _x - 1; x <= _x + 1; x++)
+            {
+                #region Boundary Check
+                if (x < 0 || x >= GameManager.BOUNDARY_X || y < 0 || y >= GameManager.BOUNDARY_Y) continue;
+                #endregion
 
+                if (x == _x && y == _y) continue; //kendine uðrama
+
+                CheckCell(x, y);
+            }
         }
     }
-
-    private void CheckSides(int x, int y)
-    {
-        CheckCell(x - 1, y);
-        CheckCell(x + 1, y);
-        CheckCell(x, y - 1);
-        CheckCell(x, y + 1);
-    }
-
 
     private void CheckCell(int x, int y)
     {
@@ -69,18 +90,32 @@ public class ButtonManager : MonoBehaviour
         #region Boundary Check
         if (x < 0 || x >= GameManager.BOUNDARY_X || y < 0 || y >= GameManager.BOUNDARY_Y) return;
         #endregion
-        if (GameManager.Instance.cells[x, y].IsBomb || GameManager.Instance.cells[x, y].isChecked || GameManager.Instance.cells[x, y]._bombCount > 0) return;
 
-        GameManager.Instance.cells[x, y].isChecked = true;
-        
-        GameManager.Instance.cells[x, y].GetComponent<Button>().interactable = false;
-        Color tempColor = GameManager.Instance.cells[x, y].GetComponent<Image>().color;
+        ButtonManager currentCell = GameManager.Instance.cells[x, y];
+
+        if (currentCell.IsBomb || currentCell._isChecked) return;
+
+
+        currentCell._isChecked = true;
+
+        currentCell.GetComponent<Button>().interactable = false;
+
+        Image currentImage = currentCell.GetComponent<Image>();
+
+        Color tempColor = currentImage.color;
         tempColor.a = .5f;
         tempColor.r = 0;
         tempColor.g = 255;
         tempColor.b = 100;
-        GameManager.Instance.cells[x, y].GetComponent<Image>().color = tempColor;
-        
-        GameManager.Instance.cells[x, y].CheckSides(x, y);
+        currentImage.color = tempColor;
+
+        if (currentCell._bombCount > 0)
+        {
+            currentCell.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentCell._bombCount.ToString();
+            return;
+        }
+
+        currentCell.CheckSides(x, y);
+
     }
 }
