@@ -6,7 +6,7 @@ public class CellSpawner : MonoBehaviour
     [SerializeField] Button _cellPrefab;
     [SerializeField] int _bombAmount;
 
-    private void Awake()
+    private void Start()
     {
         ButtonManager buttonManager;
 

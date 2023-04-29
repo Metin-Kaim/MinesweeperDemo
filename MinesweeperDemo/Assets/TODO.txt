@@ -5,8 +5,8 @@
 [x] Input Read
 [x] Cell Activate
 [x] Random Mines
-[>] Her bir cell objesi komsu bomba sayilarini tutacak
-[ ] Explode cells
+[x] Her bir cell objesi komsu bomba sayilarini tutacak
+[>] Explode cells
 
 
 [!>] Cell dizisinin konumu 
