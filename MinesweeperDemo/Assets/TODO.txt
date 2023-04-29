@@ -1,0 +1,11 @@
+[x] Sýnýr belirle
+[x] Gridal sistemi yap
+	[x] Grid Layout
+	[-] Manuel boyut
+[x] Input Read
+[x] Cell Activate
+[ ] Random Mines
+
+
+
+[!>] Cell dizisinin konumu 

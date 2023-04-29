@@ -1,4 +1,0 @@
-[>] Sýnýr belirle
-[ ] Gridal sistemi yap
-	[ ] Grid Layout
-	[ ] Manuel boyut
