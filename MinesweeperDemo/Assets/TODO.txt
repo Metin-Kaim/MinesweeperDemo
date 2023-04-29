@@ -8,7 +8,8 @@
 [x] Her bir cell objesi komsu bomba sayilarini tutacak
 [x] Explode cells
 [x] Mark mines
-[ ] Game Over
+[>] Game Over
+[>] Win
 
 ---------------------------
 [x] Cell dizisinin konumu 

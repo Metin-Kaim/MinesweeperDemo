@@ -4,7 +4,6 @@ using UnityEngine.UI;
 public class CellSpawner : MonoBehaviour
 {
     [SerializeField] Button _cellPrefab;
-    [SerializeField] int _bombAmount;
 
     private void Start()
     {
@@ -23,7 +22,7 @@ public class CellSpawner : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < _bombAmount; i++)
+        for (int i = 0; i < GameManager.Instance.BombAmount; i++)
         {
             do
             {

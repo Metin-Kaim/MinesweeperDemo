@@ -12,6 +12,8 @@ public class ButtonManager : MonoBehaviour, IPointerClickHandler
     [SerializeField] int _bombCount;
     [SerializeField] bool _isChecked;
     [SerializeField] bool _canLeftClick = true;
+    [SerializeField] bool _canRightClick = true;
+    [SerializeField] CellCounter _cellCounter;
 
     public int X { get => _x; set => _x = value; }
     public int Y { get => _y; set => _y = value; }
@@ -19,6 +21,8 @@ public class ButtonManager : MonoBehaviour, IPointerClickHandler
 
     private void Start()
     {
+        _cellCounter = transform.parent.GetComponent<CellCounter>();
+
         if (!_isBomb)
             FindNeighborsBombsCount();
     }
@@ -42,16 +46,17 @@ public class ButtonManager : MonoBehaviour, IPointerClickHandler
                 }
             }
         }
-        //transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = _bombCount.ToString();
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left && _canLeftClick)
+        if (_canLeftClick && eventData.button == PointerEventData.InputButton.Left)
         {
+            _canRightClick = false;
+
             CheckCell(_x, _y);
         }
-        else if (eventData.button == PointerEventData.InputButton.Right)
+        else if (_canRightClick && eventData.button == PointerEventData.InputButton.Right)
         {
             if (_canLeftClick)
             {
@@ -64,7 +69,7 @@ public class ButtonManager : MonoBehaviour, IPointerClickHandler
                 _canLeftClick = true;
             }
         }
-            
+
     }
 
     private void CheckSides(int _x, int _y)
@@ -86,17 +91,26 @@ public class ButtonManager : MonoBehaviour, IPointerClickHandler
 
     private void CheckCell(int x, int y)
     {
-        //fix!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         #region Boundary Check
         if (x < 0 || x >= GameManager.BOUNDARY_X || y < 0 || y >= GameManager.BOUNDARY_Y) return;
         #endregion
 
         ButtonManager currentCell = GameManager.Instance.cells[x, y];
 
-        if (currentCell.IsBomb || currentCell._isChecked) return;
+        if(currentCell.IsBomb)//gameOver
+        {
+            print("Game Over");
+            currentCell.GetComponent<Image>().color = Color.black;
+            return;
+        }
 
+        if (currentCell._isChecked) return;
+
+        _cellCounter.DecreaseRegularCells();
 
         currentCell._isChecked = true;
+        currentCell._canRightClick = false;
+        currentCell._canLeftClick = false;
 
         currentCell.GetComponent<Button>().interactable = false;
 
