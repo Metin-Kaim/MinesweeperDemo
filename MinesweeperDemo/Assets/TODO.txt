@@ -8,8 +8,9 @@
 [x] Her bir cell objesi komsu bomba sayilarini tutacak
 [x] Explode cells
 [x] Mark mines
-[>] Game Over
-[>] Win
-
+[x] Game Over
+[x] Win
+[x] Count Texts
+[>] Open all cells when lose
 ---------------------------
 [x] Cell dizisinin konumu 
