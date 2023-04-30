@@ -4,20 +4,36 @@ using UnityEngine;
 
 public class CellManager : MonoBehaviour
 {
-    public void ApenAllCells()
+    private void OnEnable()
+    {
+        GameManager.Instance.OnGameOverEvent += OpenAllCells;
+    }
+    private void OnDisable()
+    {
+        GameManager.Instance.OnGameOverEvent -= OpenAllCells;
+    }
+
+    public void OpenAllCells()
+    {
+        StartCoroutine(OpenAll());
+    }
+
+    public IEnumerator OpenAll()
     {
         for (int y = 0; y < GameManager.BOUNDARY_Y; y++)
         {
             for (int x = 0; x < GameManager.BOUNDARY_X; x++)
             {
-                Cell cell = GameManager.Instance.cells[x,y];
-                if(cell.IsBomb)
+                yield return new WaitForSeconds(.005f);
+                Cell cell = GameManager.Instance.cells[x, y];
+                if (cell.IsBomb)
                 {
                     cell.Bomb(cell);
                 }
                 else
                 {
-                    cell.RegularCell(cell);
+                    if (!cell.IsChecked)
+                        cell.RegularCell(cell);
                 }
             }
         }

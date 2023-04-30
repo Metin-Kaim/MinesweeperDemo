@@ -21,6 +21,7 @@ public class Cell : MonoBehaviour, IPointerClickHandler
     public int X { get => _x; set => _x = value; }
     public int Y { get => _y; set => _y = value; }
     public bool IsBomb { get => _isBomb; set => _isBomb = value; }
+    public bool IsChecked => _isChecked;
 
     private void Start()
     {
@@ -119,7 +120,7 @@ public class Cell : MonoBehaviour, IPointerClickHandler
     public void Bomb(Cell currentCell)
     {
         currentCell.GetComponent<Image>().color = Color.black;
-        currentCell.transform.localScale = currentCell.transform.localScale / 2;
+        currentCell.transform.localScale = new Vector2(.5f,.5f);
         currentCell.GetComponent<Image>().sprite = _knob;
     }
     private void RegularCell(Cell currentCell, int x, int y)
@@ -153,14 +154,6 @@ public class Cell : MonoBehaviour, IPointerClickHandler
     }
     public void RegularCell(Cell currentCell)
     {
-        if (currentCell._isChecked || !currentCell._canLeftClick) return; //cell is marked as bomb
-
-        _cellCounter.DecreaseRegularCells();
-
-        currentCell._isChecked = true;
-        currentCell._canRightClick = false;
-        currentCell._canLeftClick = false;
-
         currentCell.GetComponent<Button>().interactable = false;
 
         Image currentImage = currentCell.GetComponent<Image>();
@@ -176,7 +169,6 @@ public class Cell : MonoBehaviour, IPointerClickHandler
             currentCell.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = currentCell._bombCount.ToString();
             return;
         }
-
     }
 
     private bool IsInside(int x, int y)
